@@ -1,11 +1,12 @@
 <?php
 $host = "localhost";
 $dbname = "gym_tracker";
-$username = "admin";   
-$password = "admin";     
+$username = "admin";
+$password = "admin";
 
-$conn = new mysqli($host, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Anslutningen misslyckades: " . $conn->connect_error);
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Anslutningen misslyckades: " . $e->getMessage());
 }
