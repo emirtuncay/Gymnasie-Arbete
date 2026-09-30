@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registrera dig – Gym Progress Tracker</title>
+  <!-- Ligger sidan i files/ istället? Ändra till ../css/style.css -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Gym Progress Tracker</h1>
+    <nav>
+      <a href="login.html">Logga in</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Skapa konto</h2>
+
+    <!-- PHP senare: visa felmeddelanden här (t.ex. "Användarnamnet är upptaget", "Lösenorden matchar inte") -->
+    <div id="message" role="alert"></div>
+
+    <!-- PHP senare: action="register.php" (eller files/register.php), method="post" -->
+    <form action="" method="post">
+
+      <div>
+        <label for="username">Användarnamn</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+
+      <div>
+        <label for="email">E-post</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div>
+        <label for="password">Lösenord</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <div>
+        <label for="confirm_password">Bekräfta lösenord</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+      </div>
+
+      <!-- PHP senare: kontrollera att password == confirm_password, kör password_hash() och INSERT INTO users -->
+      <button type="submit">Registrera</button>
+    </form>
+
+    <p>Har du redan ett konto? <a href="login.html">Logga in</a></p>
+  </main>
+
+  <footer>
+    <p>Gymnasiearbete – Teknikprogrammet</p>
+  </footer>
+
+</body>
+</html>

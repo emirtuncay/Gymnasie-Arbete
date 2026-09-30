@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pass – Gym Progress Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- PHP senare: session_start(), kontrollera inloggning och att passet (?id=) tillhör inloggad användare -->
+
+  <header>
+    <h1>Gym Progress Tracker</h1>
+    <nav>
+      <a href="dashboard.html">Översikt</a>
+      <a href="log-workout.html">Logga pass</a>
+      <a href="progress.html">Utveckling</a>
+      <a href="logout.php">Logga ut</a>
+    </nav>
+  </header>
+
+  <main>
+    <p><a href="dashboard.html">&larr; Tillbaka till översikten</a></p>
+
+    <article>
+      <header>
+        <!-- PHP senare: SELECT name, date FROM workouts WHERE id = ? AND user_id = ? -->
+        <h2 id="workout-name">Passnamn</h2>
+        <p>Datum: <time id="workout-date" datetime="2026-09-28">2026-09-28</time></p>
+      </header>
+
+      <!-- PHP senare: loopa över workout_exercises JOIN exercises för detta pass,
+           och för varje övning loopa över dess rader i sets (ORDER BY set_number) -->
+      <section class="exercise">
+        <h3>Övningsnamn</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Set</th>
+              <th>Vikt (kg)</th>
+              <th>Reps</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Exempelrader (ta bort när PHP är på plats) -->
+            <tr>
+              <td>1</td>
+              <td>60</td>
+              <td>8</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>60</td>
+              <td>7</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- PHP senare: visa detta om passet saknar övningar -->
+      <p id="empty-message">Inga övningar loggade för det här passet.</p>
+    </article>
+
+    <!-- PHP senare (valfritt): knappar för redigera/ta bort pass -->
+  </main>
+
+  <footer>
+    <p>Gymnasiearbete – Teknikprogrammet</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Översikt – Gym Progress Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- PHP senare: session_start() och kontrollera $_SESSION['user_id'], annars redirect till login -->
+
+  <header>
+    <h1>Gym Progress Tracker</h1>
+    <nav>
+      <a href="dashboard.html">Översikt</a>
+      <a href="log-workout.html">Logga pass</a>
+      <a href="progress.html">Utveckling</a>
+      <a href="logout.php">Logga ut</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- PHP senare: skriv ut användarnamnet från sessionen -->
+    <h2>Välkommen, <span id="username">användare</span></h2>
+
+    <p><a href="log-workout.html" class="button">Logga nytt pass</a></p>
+
+    <section>
+      <h3>Dina tidigare pass</h3>
+
+      <!-- PHP senare: SELECT id, date, name FROM workouts WHERE user_id = ? ORDER BY date DESC
+           och loopa ut en <tr> per pass -->
+      <table>
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Passnamn</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Exempelrad (ta bort när PHP är på plats) -->
+          <tr>
+            <td>2026-09-28</td>
+            <td>Bröst och triceps</td>
+            <!-- PHP senare: länken blir workout-detail.php?id=<workouts.id> -->
+            <td><a href="workout-detail.html?id=1">Visa</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- PHP senare: visa detta om användaren inte har några pass -->
+      <p id="empty-message">Du har inte loggat några pass än.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Gymnasiearbete – Teknikprogrammet</p>
+  </footer>
+
+</body>
+</html>

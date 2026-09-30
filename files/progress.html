@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Utveckling – Gym Progress Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- PHP senare: session_start() och kontrollera inloggning -->
+
+  <header>
+    <h1>Gym Progress Tracker</h1>
+    <nav>
+      <a href="dashboard.html">Översikt</a>
+      <a href="log-workout.html">Logga pass</a>
+      <a href="progress.html">Utveckling</a>
+      <a href="logout.php">Logga ut</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Din utveckling</h2>
+
+    <!-- Alternativ 1: vanligt formulär (GET) som laddar om sidan med vald övning.
+         Alternativ 2: lyssna på change i JS och hämta data med fetch() från ett PHP-endpoint. -->
+    <form action="" method="get">
+      <label for="exercise_id">Välj övning</label>
+      <select id="exercise_id" name="exercise_id">
+        <!-- PHP senare: fyll med övningar användaren har loggat
+             (SELECT DISTINCT e.id, e.name FROM exercises e JOIN workout_exercises ... WHERE workouts.user_id = ?) -->
+        <option value="1">Bänkpress</option>
+        <option value="2">Knäböj</option>
+      </select>
+      <button type="submit">Visa</button>
+    </form>
+
+    <section>
+      <h3>Vikt över tid</h3>
+
+      <!-- Chart.js kopplas in här senare:
+           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+           new Chart(document.getElementById('progress-chart'), { ... })
+           Data (datum + vikt/reps) kommer från PHP, t.ex. som JSON. -->
+      <canvas id="progress-chart" width="600" height="300"></canvas>
+
+      <!-- PHP senare: visa detta om det inte finns någon data för vald övning -->
+      <p id="empty-message">Ingen data att visa för den här övningen än.</p>
+    </section>
+
+    <!-- Valfritt senare: tabell/sammanfattning, t.ex. personbästa -->
+    <section>
+      <h3>Sammanfattning</h3>
+      <dl>
+        <dt>Tyngsta vikt</dt>
+        <dd id="stat-max-weight">–</dd>
+        <dt>Antal pass</dt>
+        <dd id="stat-workout-count">–</dd>
+      </dl>
+    </section>
+  </main>
+
+  <footer>
+    <p>Gymnasiearbete – Teknikprogrammet</p>
+  </footer>
+
+</body>
+</html>

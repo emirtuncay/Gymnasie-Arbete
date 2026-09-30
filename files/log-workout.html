@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logga pass – Gym Progress Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- PHP senare: session_start() och kontrollera inloggning -->
+
+  <header>
+    <h1>Gym Progress Tracker</h1>
+    <nav>
+      <a href="dashboard.html">Översikt</a>
+      <a href="log-workout.html">Logga pass</a>
+      <a href="progress.html">Utveckling</a>
+      <a href="logout.php">Logga ut</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Logga nytt pass</h2>
+
+    <!-- PHP senare: visa fel/bekräftelse här -->
+    <div id="message" role="alert"></div>
+
+    <!-- PHP senare: action="save-workout.php", method="post"
+         Nästlade namn ger en array i $_POST:
+         $_POST['exercises'][0]['exercise_name']
+         $_POST['exercises'][0]['sets'][0]['weight'] ... -->
+    <form action="" method="post" id="workout-form">
+
+      <fieldset>
+        <legend>Passinfo</legend>
+
+        <div>
+          <label for="workout_date">Datum</label>
+          <input type="date" id="workout_date" name="workout_date" required>
+        </div>
+
+        <div>
+          <label for="workout_name">Passnamn</label>
+          <input type="text" id="workout_name" name="workout_name" placeholder="t.ex. Ben och rygg" required>
+        </div>
+      </fieldset>
+
+      <section>
+        <h3>Övningar</h3>
+
+        <!-- JS lägger in övningsblock här -->
+        <div id="exercise-list"></div>
+
+        <button type="button" id="add-exercise">Lägg till övning</button>
+      </section>
+
+      <!-- PHP senare: INSERT i workouts, sedan för varje övning:
+           hitta/skapa rad i exercises (name är unique), INSERT i workout_exercises,
+           och INSERT i sets för varje set -->
+      <button type="submit">Spara pass</button>
+    </form>
+
+    <!-- PHP senare: fyll datalist med SELECT name FROM exercises, så man kan välja befintliga övningar -->
+    <datalist id="exercise-options">
+      <option value="Bänkpress"></option>
+      <option value="Knäböj"></option>
+      <option value="Marklyft"></option>
+    </datalist>
+
+    <!-- Mallar som JS kopierar. __E__ = övningens index, __S__ = setets index -->
+    <template id="exercise-template">
+      <fieldset class="exercise">
+        <legend>Övning</legend>
+
+        <div>
+          <label>Övningens namn
+            <input type="text" name="exercises[__E__][exercise_name]" list="exercise-options" required>
+          </label>
+          <button type="button" class="remove-exercise">Ta bort övning</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Set</th>
+              <th>Vikt (kg)</th>
+              <th>Reps</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody class="set-list"></tbody>
+        </table>
+
+        <button type="button" class="add-set">Lägg till set</button>
+      </fieldset>
+    </template>
+
+    <template id="set-template">
+      <tr class="set-row">
+        <td>
+          <input type="number" name="exercises[__E__][sets][__S__][set_number]" class="set-number" readonly>
+        </td>
+        <td>
+          <input type="number" name="exercises[__E__][sets][__S__][weight]" step="0.25" min="0" required>
+        </td>
+        <td>
+          <input type="number" name="exercises[__E__][sets][__S__][reps]" min="1" required>
+        </td>
+        <td>
+          <button type="button" class="remove-set">Ta bort</button>
+        </td>
+      </tr>
+    </template>
+  </main>
+
+  <footer>
+    <p>Gymnasiearbete – Teknikprogrammet</p>
+  </footer>
+
+  <!-- JS: flytta gärna till assets/ (t.ex. assets/log-workout.js) när ni vill -->
+  <script>
+    const exerciseList = document.getElementById('exercise-list');
+    const exerciseTemplate = document.getElementById('exercise-template').innerHTML;
+    const setTemplate = document.getElementById('set-template').innerHTML;
+
+    // Räknare för unika index i name-attributen (går inte ner när man tar bort rader)
+    let exerciseIndex = 0;
+
+    function addSet(exerciseEl) {
+      const setList = exerciseEl.querySelector('.set-list');
+      const e = exerciseEl.dataset.index;
+      const s = exerciseEl.dataset.nextSet++;
+      setList.insertAdjacentHTML('beforeend',
+        setTemplate.replaceAll('__E__', e).replaceAll('__S__', s));
+      renumberSets(exerciseEl);
+    }
+
+    // Håller set_number som 1, 2, 3... även efter borttagning
+    function renumberSets(exerciseEl) {
+      exerciseEl.querySelectorAll('.set-number').forEach((input, i) => {
+        input.value = i + 1;
+      });
+    }
+
+    function addExercise() {
+      exerciseList.insertAdjacentHTML('beforeend',
+        exerciseTemplate.replaceAll('__E__', exerciseIndex));
+      const exerciseEl = exerciseList.lastElementChild;
+      exerciseEl.dataset.index = exerciseIndex;
+      exerciseEl.dataset.nextSet = 0;
+      exerciseIndex++;
+      addSet(exerciseEl); // börja med ett set
+    }
+
+    document.getElementById('add-exercise').addEventListener('click', addExercise);
+
+    // Klick på knappar inne i övningarna (event delegation)
+    exerciseList.addEventListener('click', (event) => {
+      const exerciseEl = event.target.closest('.exercise');
+      if (!exerciseEl) return;
+
+      if (event.target.matches('.add-set')) {
+        addSet(exerciseEl);
+      } else if (event.target.matches('.remove-set')) {
+        event.target.closest('.set-row').remove();
+        renumberSets(exerciseEl);
+      } else if (event.target.matches('.remove-exercise')) {
+        exerciseEl.remove();
+      }
+    });
+
+    // Starta med en övning och dagens datum
+    document.getElementById('workout_date').valueAsDate = new Date();
+    addExercise();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logga in – Gym Progress Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Gym Progress Tracker</h1>
+    <nav>
+      <a href="register.html">Skapa konto</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Logga in</h2>
+
+    <!-- PHP senare: visa felmeddelande här (t.ex. "Fel användarnamn eller lösenord") -->
+    <div id="message" role="alert"></div>
+
+    <!-- PHP senare: action="login.php", method="post" -->
+    <form action="" method="post">
+
+      <div>
+        <label for="login">Användarnamn eller e-post</label>
+        <!-- PHP senare: leta efter matchning i både users.username och users.email -->
+        <input type="text" id="login" name="login" required>
+      </div>
+
+      <div>
+        <label for="password">Lösenord</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <!-- PHP senare: password_verify(), starta session ($_SESSION['user_id']) och skicka vidare till dashboard -->
+      <button type="submit">Logga in</button>
+    </form>
+
+    <p>Har du inget konto? <a href="register.html">Registrera dig</a></p>
+  </main>
+
+  <footer>
+    <p>Gymnasiearbete – Teknikprogrammet</p>
+  </footer>
+
+</body>
+</html>
