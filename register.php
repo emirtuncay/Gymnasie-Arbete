@@ -4,19 +4,29 @@ ini_set('display_errors', 1);
 
 require_once __DIR__ . '/assets/functions.php';
 
+$error = '';
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    if (addUser($username, $email, $password)) {
+    $result = addUser($username, $email, $password);
+
+    if ($result === true) {
         header('Location: login.php');
         exit();
+    } elseif ($result === 'duplicate') {
+        $error = 'Användarnamnet eller e-posten är redan registrerad.';
     } else {
-        echo "Något gick fel vid registreringen.";
+        $error = 'Något gick fel, försök igen.';
     }
 }
 ?>
+
+<?php if ($error !== ''): ?>
+    <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
+<?php endif; ?>
 
 <form method="POST" action="register.php">
     <input type="text" name="username" placeholder="Användarnamn" required>
