@@ -132,3 +132,14 @@ function getWorkoutsForUser($userId)
     $stmt->execute([':user_id' => $userId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function userOwnsWorkout($workoutId, $userId)
+{
+    global $conn;
+
+    $sql = "SELECT id FROM workouts WHERE id = :id AND user_id = :user_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':id' => $workoutId, ':user_id' => $userId]);
+
+    return $stmt->fetch() !== false;
+}

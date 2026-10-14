@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $workoutId = createWorkout($userId, $date, $name);
 
     if ($workoutId) {
-        // Nästa steg: skicka vidare till sidan där man lägger till övningar
         header('Location: add-exercises.php?workout_id=' . $workoutId);
         exit();
     } else {

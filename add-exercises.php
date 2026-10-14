@@ -11,6 +11,11 @@ if (!$workoutId) {
     die("Inget pass valt.");
 }
 
+if (!userOwnsWorkout($workoutId, $_SESSION['user_id'])) {
+    http_response_code(403);
+    die("Du har inte tillgång till det här passet.");
+}
+
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
