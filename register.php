@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <?php endif; ?>
 
 <form method="POST" action="register.php">
+    <p>Har du redan ett konto? <a href="login.php">Logga in här</a>.</p>
     <input type="text" name="username" placeholder="Användarnamn" required>
     <input type="email" name="email" placeholder="E-post" required>
     <input type="password" name="password" placeholder="Lösenord" required>
