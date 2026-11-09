@@ -22,22 +22,24 @@ require_once __DIR__ . '/assets/functions.php';
     <h2>Dina pass</h2>
     <a href="log-workout.php">+ Logga nytt pass</a>
 
-    <?php
-    $workouts = getWorkoutsForUser($_SESSION['user_id']);
+    <?php $workouts = getWorkoutsForUser($_SESSION['user_id']); ?>
 
-    if (empty($workouts)) {
-        echo "<p>Inga pass loggade än.</p>";
-    } else {
-        echo "<ul>";
-        foreach ($workouts as $w) {
-            echo "<li>";
-            echo htmlspecialchars($w['date']) . " — " . htmlspecialchars($w['name']);
-            echo " <a href='workout-detail.php?workout_id=" . $w['id'] . "'>Visa</a>";
-            echo "</li>";
-        }
-        echo "</ul>";
-    }
-    ?>
+    <?php if (empty($workouts)): ?>
+        <p>Inga pass loggade än.</p>
+    <?php else: ?>
+        <ul>
+            <?php foreach ($workouts as $w): ?>
+                <li>
+                    <?php echo htmlspecialchars($w['date']); ?> — <?php echo htmlspecialchars($w['name']); ?>
+                    <a href="workout-detail.php?workout_id=<?php echo (int)$w['id']; ?>">Visa</a>
+                    <form method="POST" action="delete-workout.php" style="display:inline" onsubmit="return confirm('Ta bort passet?');">
+                        <input type="hidden" name="workout_id" value="<?php echo (int)$w['id']; ?>">
+                        <button type="submit">Ta bort</button>
+                    </form>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
 </body>
 
 </html>

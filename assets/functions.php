@@ -143,3 +143,14 @@ function userOwnsWorkout($workoutId, $userId)
 
     return $stmt->fetch() !== false;
 }
+
+function deleteWorkout($workoutId, $userId)
+{
+    global $conn;
+
+    $sql = "DELETE FROM workouts WHERE id = :id AND user_id = :user_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':id' => $workoutId, ':user_id' => $userId]);
+
+    return $stmt->rowCount() > 0;
+}
