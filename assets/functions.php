@@ -154,3 +154,21 @@ function deleteWorkout($workoutId, $userId)
 
     return $stmt->rowCount() > 0;
 }
+
+function getExerciseProgress($userId, $exerciseId)
+{
+    global $conn;
+
+    $sql = "SELECT w.date,
+                   MAX(s.weight) AS top_weight,
+                   SUM(s.weight * s.reps) AS volume
+            FROM sets s
+            JOIN workout_exercises we ON s.workout_exercise_id = we.id
+            JOIN workouts w ON we.workout_id = w.id
+            WHERE w.user_id = :user_id AND we.exercise_id = :exercise_id
+            GROUP BY w.id, w.date
+            ORDER BY w.date ASC";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':user_id' => $userId, ':exercise_id' => $exerciseId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
