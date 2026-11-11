@@ -1,6 +1,6 @@
 1 Knapp att ta bort ett pass, se till att bara användare kan ta bort sina egna pass. **KLAR**
 
-2 Data för progression, hämta vikt och reps för en vald övning över all pass sorterat på datum. Grafen kommer behöva den.
+2 Data för progression, hämta vikt och reps för en vald övning över all pass sorterat på datum. Grafen kommer behöva den. Nästan klar. Behöver finslipa
 
 3 Neka tom data och negativa vikter, krav på längd och svårighet av lösenord.
 

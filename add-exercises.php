@@ -23,14 +23,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $weights = $_POST['weight'];
     $reps = $_POST['reps'];
 
-    $weId = addExerciseToWorkout($workoutId, $exerciseId);
-
+    $valid = true;
     foreach ($weights as $i => $weight) {
-        $setNumber = $i + 1;
-        addSet($weId, $setNumber, $weight, $reps[$i]);
+        if (
+            !is_numeric($weight) || $weight < 0 || $weight > 999.99
+            || !is_numeric($reps[$i]) || $reps[$i] < 1 || $reps[$i] > 1000
+        ) {
+            $valid = false;
+        }
     }
 
-    // formuläret visas igen så man kan lägga till fler övningar
+    if (!$valid) {
+        $error = 'Ogiltiga värden. Vikten ska vara mellan 0 och 999,99 kg och reps minst 1.';
+    } else {
+        $weId = addExerciseToWorkout($workoutId, $exerciseId);
+
+        foreach ($weights as $i => $weight) {
+            $setNumber = $i + 1;
+            addSet($weId, $setNumber, $weight, $reps[$i]);
+        }
+    }
 }
 
 $exercises = getAllExercises();

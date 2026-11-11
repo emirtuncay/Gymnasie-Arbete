@@ -40,6 +40,8 @@ require_once __DIR__ . '/assets/functions.php';
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
+    <br>
+    <a href="progress.php">Se progression</a>
 </body>
 
 </html>
