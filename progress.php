@@ -49,6 +49,10 @@ if ($selectedId) {
                         <td><?php echo htmlspecialchars($row['top_weight']); ?></td>
                         <td><?php echo htmlspecialchars($row['volume']); ?></td>
                     </tr>
+                    <canvas id="progressChart" style="max-width: 700px;"></canvas>
+
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
                 <?php endforeach; ?>
             </table>
         <?php endif; ?>
