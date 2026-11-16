@@ -11,15 +11,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $result = addUser($username, $email, $password);
-
-    if ($result === true) {
-        header('Location: login.php');
-        exit();
-    } elseif ($result === 'duplicate') {
-        $error = 'Användarnamnet eller e-posten är redan registrerad.';
+    if (trim($username) === '') {
+        $error = 'Skriv ett användarnamn.';
+    } elseif (mb_strlen($password, 'UTF-8') < 8) {
+        $error = 'Lösenordet måste vara minst 8 tecken långt.';
     } else {
-        $error = 'Något gick fel, försök igen.';
+        $result = addUser($username, $email, $password);
+
+        if ($result === true) {
+            header('Location: login.php');
+            exit();
+        } elseif ($result === 'duplicate') {
+            $error = 'Användarnamnet eller e-posten är redan registrerad.';
+        } else {
+            $error = 'Något gick fel, försök igen.';
+        }
     }
 }
 ?>
