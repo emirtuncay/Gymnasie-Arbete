@@ -42,6 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $setNumber = $i + 1;
             addSet($weId, $setNumber, $weight, $reps[$i]);
         }
+
+        header('Location: add-exercises.php?workout_id=' . (int)$workoutId, true, 303);
+        exit();
     }
 }
 
