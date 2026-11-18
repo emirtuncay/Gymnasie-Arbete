@@ -8,16 +8,20 @@ $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $date = $_POST['date'];
-    $name = $_POST['name'];
+    $name = trim($_POST['name'] ?? '');
     $userId = $_SESSION['user_id'];
 
-    $workoutId = createWorkout($userId, $date, $name);
-
-    if ($workoutId) {
-        header('Location: add-exercises.php?workout_id=' . $workoutId);
-        exit();
+    if ($name === '') {
+        $error = 'Skriv ett namn på passet.';
     } else {
-        $error = 'Något gick fel, försök igen.';
+        $workoutId = createWorkout($userId, $date, $name);
+
+        if ($workoutId) {
+            header('Location: add-exercises.php?workout_id=' . $workoutId);
+            exit();
+        } else {
+            $error = 'Något gick fel, försök igen.';
+        }
     }
 }
 ?>

@@ -25,16 +25,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $valid = true;
     foreach ($weights as $i => $weight) {
+        $repCount = filter_var($reps[$i] ?? null, FILTER_VALIDATE_INT);
+
         if (
             !is_numeric($weight) || $weight < 0 || $weight > 999.99
-            || !is_numeric($reps[$i]) || $reps[$i] < 1 || $reps[$i] > 1000
+            || $repCount === false || $repCount < 1 || $repCount > 1000
         ) {
             $valid = false;
         }
     }
 
     if (!$valid) {
-        $error = 'Ogiltiga värden. Vikten ska vara mellan 0 och 999,99 kg och reps minst 1.';
+        $error = 'Ogiltiga värden. Vikten ska vara mellan 0 och 999,99 kg och reps ett heltal mellan 1 och 1000.';
     } else {
         $weId = addExerciseToWorkout($workoutId, $exerciseId);
 
@@ -79,9 +81,9 @@ $exercises = getAllExercises();
         <div id="sets-container">
             <div class="set-row">
                 <label>Set 1 — Vikt (kg):</label>
-                <input type="number" step="0.5" name="weight[]" required>
+                <input type="number" step="0.01" min="0" max="999.99" name="weight[]" required>
                 <label>Reps:</label>
-                <input type="number" name="reps[]" required>
+                <input type="number" step="1" min="1" max="1000" name="reps[]" required>
             </div>
         </div>
 
@@ -104,9 +106,9 @@ $exercises = getAllExercises();
             div.className = 'set-row';
             div.innerHTML = `
                 <label>Set ${setCount} — Vikt (kg):</label>
-                <input type="number" step="0.5" name="weight[]" required>
+                <input type="number" step="0.01" min="0" max="999.99" name="weight[]" required>
                 <label>Reps:</label>
-                <input type="number" name="reps[]" required>
+                <input type="number" step="1" min="1" max="1000" name="reps[]" required>
             `;
             container.appendChild(div);
         }
