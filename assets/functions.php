@@ -161,13 +161,19 @@ function getExerciseProgress($userId, $exerciseId)
 
     $sql = "SELECT w.date,
                    MAX(s.weight) AS top_weight,
+                   (SELECT s2.reps
+                    FROM sets s2
+                    JOIN workout_exercises we2 ON s2.workout_exercise_id = we2.id
+                    WHERE we2.workout_id = w.id AND we2.exercise_id = we.exercise_id
+                    ORDER BY s2.weight DESC, s2.reps DESC
+                    LIMIT 1) AS top_reps,
                    SUM(s.weight * s.reps) AS volume
             FROM sets s
             JOIN workout_exercises we ON s.workout_exercise_id = we.id
             JOIN workouts w ON we.workout_id = w.id
             WHERE w.user_id = :user_id AND we.exercise_id = :exercise_id
-            GROUP BY w.id, w.date
-            ORDER BY w.date ASC";
+            GROUP BY w.id, w.date, we.exercise_id
+            ORDER BY w.date ASC, w.id ASC";
     $stmt = $conn->prepare($sql);
     $stmt->execute([':user_id' => $userId, ':exercise_id' => $exerciseId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);

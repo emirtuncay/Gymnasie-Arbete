@@ -7,12 +7,15 @@ require_once __DIR__ . '/assets/functions.php';
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $date = $_POST['date'];
+    $date = $_POST['date'] ?? '';
     $name = trim($_POST['name'] ?? '');
     $userId = $_SESSION['user_id'];
+    $validDate = DateTime::createFromFormat('!Y-m-d', $date);
 
     if ($name === '') {
         $error = 'Skriv ett namn på passet.';
+    } elseif (!$validDate || $validDate->format('Y-m-d') !== $date) {
+        $error = 'Välj ett giltigt datum.';
     } else {
         $workoutId = createWorkout($userId, $date, $name);
 
